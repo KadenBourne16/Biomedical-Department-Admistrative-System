@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.specialInputText{
+    @apply border-2 border-gray-500 w-96 h-8 pl-2 rounded-md;
+}
+
+.specialLabel{
+    @apply font-semibold;
+    font-size: 1em;
+    margin-right: 1em;
+}
+
+.main-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
