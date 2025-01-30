@@ -1,10 +1,7 @@
-const express = require("express")
+const express = require("express");
 const router = express.Router();
-const authenticationcontroller  = require('../controller/authenticationcontroller')
+const authenticationcontroller = require("../controller/authenticationcontroller.js");
 
-router.get('/signupstudent', authenticationcontroller.registerStudent)
+router.post('/signupstudent', authenticationcontroller.signupstudent);
 
-
-module.exports = {
-    router
-}
+module.exports = router; // Export the router directly

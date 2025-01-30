@@ -14,12 +14,6 @@ app.use(bodyParser.json())
 
 app.use('/bdas', authenticationRouter)
 
-app.use((err, res, next) => {
-  console.log(err)
-  res.status(500).send('Internal Server Error')
-})
-
-
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });

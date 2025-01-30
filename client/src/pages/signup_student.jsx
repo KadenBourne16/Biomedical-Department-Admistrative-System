@@ -1,8 +1,9 @@
 import { useState } from "react";
+import axios from 'axios';
 
 function SignupStudent() {
   const [formData, setFormData] = useState({
-    // program information
+    // Program information
     indexNo: "",
     entryMode: "",
     entryLevel: "",
@@ -11,7 +12,7 @@ function SignupStudent() {
     dateOfAdmission: "",
     dateOfCompletion: "",
     hall: "",
-    // bio information
+    // Bio information
     prefix: "",
     firstName: "",
     middleName: "",
@@ -34,6 +35,7 @@ function SignupStudent() {
   });
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [errors, setErrors] = useState({}); // To store validation errors
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,8 +45,33 @@ function SignupStudent() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const validateForm = () => {
+    const newErrors = {};
+    // Check institutional email
+    if (!formData.institutionalEmail.includes('@ktu.edu.gh')) {
+      newErrors.institutionalEmail = "Institutional email must contain @ktu.edu.gh";
+    }
+    // Check mobile number
+    if (!/^\d+$/.test(formData.mobileNumber)) {
+      newErrors.mobileNumber = "Mobile number must contain only digits";
+    }
+    return newErrors;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    try {
+      const res = await axios.post('http://localhost:3300/bdas/signupstudent', formData);
+      console.log("Response:", res.data);
+    } catch (err) {
+      console.log("Error occurred", err);
+    }
     // Send the form data to the backend
     console.log(formData);
   };
@@ -105,7 +132,7 @@ function SignupStudent() {
               >
                 <option value="">Select Entry Level</option>
                 <option value="100">100</option>
-                <option value="200">200</option>
+                < option value="200">200</option>
                 <option value="300">300</option>
                 <option value="400">400</option>
               </select>
@@ -231,7 +258,7 @@ function SignupStudent() {
                 type="text"
                 id="middleName"
                 name="middleName"
-                value={formData.middleName}
+                value={formData .middleName}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
               />
@@ -319,7 +346,8 @@ function SignupStudent() {
             </div>
             <div className="mb-4">
               <label htmlFor="cityOfBirth" className="block text-gray-700 font-bold mb-2">
-                City of Birth </label>
+                City of Birth:
+              </label>
               <input
                 type="text"
                 id="cityOfBirth"
@@ -342,7 +370,7 @@ function SignupStudent() {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
               />
             </div>
-           
+            {errors.mobileNumber && <p className="text-red-500">{errors.mobileNumber}</p>}
             <div className="mb-4">
               <label htmlFor="institutionalEmail" className="block text-gray-700 font-bold mb-2">
                 Institutional Email:
@@ -354,7 +382,8 @@ function SignupStudent() {
                 value={formData.institutionalEmail}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-              />
+ />
+             {errors.institutionalEmail && <p className="text-red-500">{errors.institutionalEmail}</p>}
             </div>
             <div className="mb-4">
               <label htmlFor="addressLine" className="block text-gray-700 font-bold mb-2">
@@ -399,27 +428,34 @@ function SignupStudent() {
               <label htmlFor="martialStatus" className="block text-gray-700 font-bold mb-2">
                 Martial Status:
               </label>
-              <input
-                type="text"
+              <select
                 id="martialStatus"
                 name="martialStatus"
                 value={formData.martialStatus}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-              />
+              >
+                <option value="">Select Martial Status</option>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+              </select>
             </div>
             <div className="mb-4">
               <label htmlFor="religion" className="block text-gray-700 font-bold mb-2">
                 Religion:
               </label>
-              <input
-                type="text"
+              <select
                 id="religion"
                 name="religion"
                 value={formData.religion}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-              />
+              >
+                <option value="">Select Religion</option>
+                <option value="Christianity">Christianity</option>
+                <option value="Islamic">Islamic</option>
+                <option value="Traditionalist">Traditionalist</option>
+              </select>
             </div>
             <div className="mb-4">
               <label htmlFor="digitalAddress" className="block text-gray-700 font-bold mb-2">
@@ -431,8 +467,7 @@ function SignupStudent() {
                 name="digitalAddress"
                 value={formData.digitalAddress}
                 onChange={handleChange}
-                className="shadow appearance-none border rounded w-full py-2 ```javascript
-                px-3 text-gray-700"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
               />
             </div>
             <button
@@ -457,11 +492,10 @@ function SignupStudent() {
 
   return (
     <div className="signupbackground">
-        <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-4">
-            {renderStep()}
-        </form>
+      <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-4">
+        {renderStep()}
+      </form>
     </div>
-    
   );
 }
 
