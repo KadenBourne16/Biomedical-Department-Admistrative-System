@@ -1,7 +1,8 @@
 const express = require("express")
-const router = express.Router()
+const router = express.Router();
 const authenticationcontroller  = require('../controller/authenticationcontroller')
-router.get('/', authenticationcontroller.registerStudent)
+
+router.get('/signupstudent', authenticationcontroller.registerStudent)
 
 
 module.exports = {

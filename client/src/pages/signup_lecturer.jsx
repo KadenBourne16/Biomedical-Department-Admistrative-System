@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import '../style/components.css';
 import '../index.css'
+import axios from 'axios'
 
 function SignupLecturer() {
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: currentYear - 1950 + 1 }, (_, i) => 1950 + i);
 
+  const [successMessage, setSuccessMessage] = useState(false)
   const [lecturerForm, setLecturerForm] = useState({
     Firstname: "",
     MiddleName: "",
@@ -51,6 +53,15 @@ function SignupLecturer() {
   const handlePreviousSection = () => {
     setSection(section - 1);
   };
+
+  const handleSubmitToBackend = async(e) => {
+      try{
+        const res = axios.post('https://localhost:3000/signupslecturer', lecturerForm);
+        successMessage(true);
+      }catch(err){
+        console.log("Error occured", err)
+      }
+  }
 
   const renderSection = () => {
     switch (section) {
@@ -613,7 +624,7 @@ function SignupLecturer() {
               <div>
                 <button
                   className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
-                  onClick={() => alert('Form submitted!')}
+                  onClick={handleSubmitToBackend}
                 >
                   Submit
                 </button>

@@ -1,6 +1,7 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
+@import "tailwindcss";
 
 .specialInputText{
     @apply border-2 border-gray-500 w-96 h-8 pl-2 rounded-md;
