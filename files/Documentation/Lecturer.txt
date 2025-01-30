@@ -1,0 +1,42 @@
+PERSONAL INFORMATION
+
+Name(first, surname, last)
+Address(House Address)
+Gender
+Contact Addrss(Post Office)
+Telephone Number
+Email
+
+
+ACADEMIC INFORMATION(Add button to be able to add new qualification)
+
+Qualification(Qualification selectors should be horizontally aligned)
+Qualification type(select-option = Masters, PHD), year_of_study(select-option = 1950-(currentmachineyear-1)),year_completion(1950 - (currentmachineyar-1))
+
+Professional Qualification(Text Field)
+Professional Affiliations(Text Field)
+
+
+EMPLOYEE INFORMATION
+Institution(Text Field), Roles(Text Field), Duties(Text Field)
+
+RESEARCH INFORMATION
+1. Research Areas(Text Field)
+2. Current Research Area(Text Field)
+3. Research Collaborations
+
+COURSES INFORMATION
+Courses Taught(Text Field), Year(Text Field), Programs
+
+DEPARTMENT ROLE INFORMATION
+Role(Text) - from(select-option = 1950 - (currentglobalyear)
+
+STUDENT ASSIGNED
+IndexNo_Student(Text) - Year(Select-Option = 100, 200, 300, 400) - Programme(Text) - Type(Select-Option = Regular, Weekend)
+
+EXTERNAL LINKS
+Institutions(Text) - Nature(Description-WideTextbox--- 500 words max)
+Industry(Text) - Nature(Description-WideTextbox--- 500 words max)
+
+COURSE ALLOCATION INFORMATION
+Sem 1

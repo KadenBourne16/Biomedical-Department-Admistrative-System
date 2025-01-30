@@ -53,3 +53,9 @@
     background-size: cover;
     background-repeat: no-repeat;
 }
+
+.reviewbackground{
+  background-image: url("../public/reviewbackground.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}

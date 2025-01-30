@@ -1,13 +1,38 @@
 import React, { useState } from 'react';
 import '../style/components.css';
+import '../index.css'
 
 function SignupLecturer() {
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: currentYear - 1950 + 1 }, (_, i) => 1950 + i);
+
   const [lecturerForm, setLecturerForm] = useState({
     Firstname: "",
     MiddleName: "",
     Lastname: "",
     Gender: "",
-    Email: ""
+    Email: "",
+    QualificationType: "",
+    YearOfStudy: "",
+    YearOfCompletion: "",
+    ProfessionalQualification: "",
+    ProfessionalAffiliation: "",
+    EducationLevel: "",
+    Institution: "",
+    Roles: "",
+    Duties: "",
+    ResearchAreas: "",
+    CurrentResearchArea: "",
+    ResearchCollaborations: "",
+    CoursesTaught: "",
+    CourseYear: "",
+    Programs: "",
+    DepartmentRole: "",
+    DepartmentRoleYear: "",
+    ExternalInstitutions: "",
+    ExternalInstitutionsNature: "",
+    ExternalIndustry: "",
+    ExternalIndustryNature: ""
   });
   const [section, setSection] = useState(0);
 
@@ -31,57 +56,56 @@ function SignupLecturer() {
     switch (section) {
       case 0:
         return (
-          <div className='main-container'>
+          <div className='main-container flex flex-col items-center signupbackground h-screen '>
             <h1 className='text-gray-500 text-3xl font-semibold'>Personal Information</h1>
-            <div className='mt-2 space-y-4'>
-              <div>
-                <label htmlFor="firstname" className='specialLabel'>First Name</label>
-                <br/>
+            <div className='mt-2 space-y-4 flex flex-col items-center'>
+              <div className="mb-4">
+                <label htmlFor="firstname" className='block text-gray-700 font-bold mb-2'>First Name:</label>
                 <input
                   type="text"
                   name="Firstname"
                   id="firstname"
-                  className='specialInputText'
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
                   value={lecturerForm.Firstname}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
 
-              <div>
-                <label htmlFor="middlename" className='specialLabel'>Middle Name</label>
-                <br/>
+              <div className="mb-4">
+                <label htmlFor="middlename" className='block text-gray-700 font-bold mb-2'>Middle Name:</label>
                 <input
                   type="text"
                   name="MiddleName"
                   id="middlename"
-                  className="specialInputText"
+                  className="shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700"
                   value={lecturerForm.MiddleName}
                   onChange={handleInputChange}
                 />
               </div>
 
-              <div>
-                <label htmlFor="lastname" className="specialLabel">Last Name</label>
-                <br />
+              <div className="mb-4">
+                <label htmlFor="lastname" className="block text-gray-700 font-bold mb-2">Last Name:</label>
                 <input
                   type="text"
                   name="Lastname"
                   id="lastname"
-                  className="specialInputText"
+                  className="shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700"
                   value={lecturerForm.Lastname}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
 
-              <div>
-                <label htmlFor="gender" className="specialLabel">Gender</label>
-                <br />
+              <div className="mb-4">
+                <label htmlFor="gender" className="block text-gray-700 font-bold mb-2">Gender:</label>
                 <select
                   name="Gender"
                   id="gender"
-                  className='specialInputText pl-9'
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
                   value={lecturerForm.Gender}
                   onChange={handleInputChange}
+                  required
                 >
                   <option value="">Select Gender</option>
                   <option value="Male">Male</option>
@@ -89,23 +113,22 @@ function SignupLecturer() {
                 </select>
               </div>
 
-              <div>
-                <label htmlFor="email" className="specialLabel">Email</label>
-                <br />
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-gray-700 font-bold mb-2">Email:</label>
                 <input
                   type="email"
                   name="Email"
                   id="email"
-                  className="specialInputText"
+                  className="shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700"
                   value={lecturerForm.Email}
                   onChange={handleInputChange}
+                  required
                 />
               </div>
-
-              <div className='grid grid-cols-2 gap-4'>
+              <div className='grid grid-cols-2 gap-4 mt-8'>
                 <div>
                   <button
-                    className='border-2 border-gray-200 px-4 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
+                    className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
                     onClick={handlePreviousSection}
                     disabled={section === 0}
                   >
@@ -125,92 +148,484 @@ function SignupLecturer() {
           </div>
         );
       case 1:
-        return(
-          <div className='main-container'>
-              <div>
-                <h1 className='text-gray-500 text-3xl font-semibold'>Academic Information</h1>
-              </div> 
-              <div className='form-container'>
-                  <div>
-                    <label htmlFor="" className="specialLabel">Education Level</label>
-                    <br/>
-                    <input type="text" className='specialInputText' />
-                  </div>
-
-                  <div>
-                    <label htmlFor="" className="specialLabel">Education Level</label>
-                    <br/>
-                    <input type="text" className='specialInputText' />
-                  </div>
-
-                  <div>
-                    <label htmlFor="" className="specialLabel">Education Level</label>
-                    <br/>
-                    <input type="text" className='specialInputText' />
-                  </div>
-
+        return (
+          <div className='main-container flex flex-col items-center signupbackground h-screen '>
+            <div className='flex flex-row justify-between w-96'>
+              <h1 className='text-gray-500 text-3xl font-semibold'>Academic Information</h1>
+            </div>
+            <div className='form-container flex flex-col items-center space-y-4 mt-6'>
+              <div className="mb-4">
+                <div className='flex flex-row mb-2 space-x-4'>
+                  <label htmlFor="qualificationType" className="block text-gray-700 font-bold mb-2">Qualification Type:</label>
+                  <button className='px-6 p-1 text-white font-bold bg-green-500 rounded-md'>Add Qualification</button>
+                </div>
+                <select
+                  name="QualificationType"
+                  id="qualificationType"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.QualificationType}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select Qualification</option>
+                  <option value="Masters">Masters</option>
+                  <option value="PHD">PHD</option>
+                </select>
               </div>
-             <div className='grid grid-cols-2 gap-4'>
-                <div>
-                  <button
-                    className='border-2 border-gray-200 px-4 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
-                    onClick={handlePreviousSection}
-                    disabled={section === 0}
-                  >
-                    Previous
-                  </button>
-                </div>
-                <div>
-                  <button
-                    className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
-                    onClick={handleNextSection}
-                  >
-                    Next
-                  </button>
-                </div>
+              <div className="mb-4">
+                <label htmlFor="yearOfStudy" className="block text-gray-700 font-bold mb-2">Year of Study:</label>
+                <input
+                  type="date"
+                  name="YearOfStudy"
+                  id="yearOfStudy"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.YearOfStudy}
+                  onChange={handleInputChange}
+                />
               </div>
-          </div>
-        )
-        case 2:
-          return(
-            <div>
-                <div>
-                  <h1 className='text-gray-500 text-3xl font-semibold'>Other Information</h1>
-                </div>
-                <div>
-                    <label htmlFor="" className="specialLabel">Education Level</label>
-                    <br/>
-                    <input type="text" className='specialInputText' />
-                  </div>
-
-                <div className='grid grid-cols-2 gap-4'>
-                <div>
-                  <button
-                    className='border-2 border-gray-200 px-4 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
-                    onClick={handlePreviousSection}
-                    disabled={section === 0}
-                  >
-                    Previous
-                  </button>
-                </div>
-                <div>
-                  <button
-                    className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
-                    onClick={handleNextSection}
-                  >
-                    Next
-                  </button>
-                </div>
+              <div className="mb-4">
+                <label htmlFor="yearOfCompletion" className="block text-gray-700 font-bold mb-2">Year of Completion:</label>
+                <input
+                  type="date"
+                  name="YearOfCompletion"
+                  id="yearOfCompletion"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.YearOfCompletion}
+                  onChange={handleInputChange}
+                />
               </div>
             </div>
-          );
+            <div className='flex flex-col items-center mt-4 space-y-1'>
+              <div className="mb-4">
+                <label htmlFor="professionalQualification" className="block text-gray-700 font-bold mb-2">Professional Qualification:</label>
+                <input
+                  type="text"
+                  name="ProfessionalQualification"
+                  id="professionalQualification"
+                  className="shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700"
+                  value={lecturerForm.ProfessionalQualification}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="professionalAffiliation" className="block text-gray-700 font-bold mb-2">Professional Affiliation:</label>
+                <input
+                  type="text"
+                  name="ProfessionalAffiliation"
+                  id="professionalAffiliation"
+                  className="shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700"
+                  value={lecturerForm.ProfessionalAffiliation}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+            <div className='grid grid-cols-2 gap-4 mt-8'>
+              <div>
+                <button
+                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
+                  onClick={handlePreviousSection}
+                  disabled={section === 0}
+                >
+                  Previous
+                </button>
+              </div>
+              <div>
+                <button
+                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
+                  onClick={handleNextSection}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      case 2:
+        return (
+          <div className='main-container flex flex-col items-center signupbackground h-screen '>
+            <h1 className='text-gray-500 text-3xl font-semibold mb-6'>Educational Information</h1>
+            <div className='flex flex-col items-center space-y-4'>
+              <div className="mb-4">
+                <label htmlFor="educationLevel" className="block text-gray-700 font-bold mb-2">Education Level:</label>
+                <input
+                  type="text"
+                  name="EducationLevel"
+                  id="educationLevel"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.EducationLevel}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="institution" className="block text-gray-700 font-bold mb-2">Institution:</label>
+                <input
+                  type="text"
+                  name="Institution"
+                  id="institution"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.Institution}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="roles" className="block text-gray-700 font-bold mb-2">Roles:</label>
+                <input
+                  type="text"
+                  name="Roles"
+                  id="roles"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.Roles}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="duties" className="block text-gray-700 font-bold mb-2">Duties:</label>
+                <input
+                  type="text"
+                  name="Duties"
+                  id="duties"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.Duties}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+            <div className='grid grid-cols-2 gap-4 mt-8'>
+              <div>
+                <button
+                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
+                  onClick={handlePreviousSection}
+                  disabled={section === 0}
+                >
+                  Previous
+                </button>
+              </div>
+              <div>
+                <button
+                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
+                  onClick={handleNextSection}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      case 3:
+        return (
+          <div className='main-container flex flex-col items-center signupbackground h-screen'>
+            <h1 className='text-gray-500 text-3xl font-semibold mb-4'>Research Information</h1>
+            <div className='flex flex-col items-center space-y-4'>
+              <div className="mb-4">
+                <label htmlFor="researchAreas" className="block text-gray-700 font-bold mb-2">Research Areas:</label>
+                <input
+                  type="text"
+                  name="ResearchAreas"
+                  id="researchAreas"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.ResearchAreas}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="currentResearchArea" className="block text-gray-700 font-bold mb-2">Current Research Area:</label>
+                <input
+                  type="text"
+                  name="CurrentResearchArea"
+                  id="currentResearchArea"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.CurrentResearchArea}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="researchCollaborations" className="block text-gray-700 font-bold mb-2">Research Collaborations:</label>
+                <input
+                  type="text"
+                  name="ResearchCollaborations"
+                  id="researchCollaborations"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.ResearchCollaborations}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4 mt-8">
+            <div>
+                <button
+                  className="border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 "
+                  onClick={handlePreviousSection}
+                >
+                  Previous
+                </button>
+              </div>
+              <div>
+                <button
+                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
+                  onClick={handleNextSection}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      case 4:
+        return (
+          <div className='main-container flex flex-col items-center signupbackground h-screen'>
+            <h1 className='text-gray-500 text-3xl font-semibold mb-6'>Courses Information</h1>
+            <div className='flex flex-col items-center space-y-4'>
+              <div className="mb-4">
+                <label htmlFor="coursesTaught" className="block text-gray-700 font-bold mb-2">Courses Taught:</label>
+                <input
+                  type="text"
+                  name="CoursesTaught"
+                  id="coursesTaught"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.CoursesTaught}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="courseYear" className="block text-gray-700 font-bold mb-2">Year:</label>
+                <input
+                  type="text"
+                  name="CourseYear"
+                  id="courseYear"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.CourseYear}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="programs" className="block text-gray-700 font-bold mb-2">Programs:</label>
+                <input
+                  type="text"
+                  name="Programs"
+                  id="programs"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.Programs}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+            <div className='grid grid-cols-2 gap-4 mt-8'>
+              <div>
+                <button
+                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
+                  onClick={handlePreviousSection}
+                >
+                  Previous
+                </button>
+              </div>
+              <div>
+                <button
+                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
+                  onClick={handleNextSection}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      case 5:
+        return (
+          <div className='main-container flex flex-col items-center signupbackground h-screen '>
+            <h1 className='text-gray-500 text-3xl font-semibold'>Department Role Information</h1>
+            <div className='flex flex-col items-center space-y-4'>
+              <div className="mb-4">
+                <label htmlFor="departmentRole" className="block text-gray-700 font-bold mb-2">Role:</label>
+                <input
+                  type="text"
+                  name="DepartmentRole"
+                  id="departmentRole"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.DepartmentRole}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="departmentRoleYear" className="block text-gray-700 font-bold mb-2">Year:</label>
+                <select
+                  name="DepartmentRoleYear"
+                  id="departmentRoleYear"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.DepartmentRoleYear}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select Year</option>
+                  {years.map(year => (
+                    <option key={year} value={year}>{year}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className='grid grid-cols-2 gap-4 mt-8'>
+              <div>
+                <button
+                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
+                  onClick={handlePreviousSection}
+                >
+                  Previous
+                </button>
+              </div>
+              <div>
+                <button
+                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
+                  onClick={handleNextSection}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      case 6:
+        return (
+          <div className='main-container flex flex-col items-center signupbackground h-screen '>
+            <h1 className='text-gray-500 text-3xl font-semibold'>External Links</h1>
+            <div className='flex flex-col items-center space-y-4'>
+              <div className="mb-4">
+                <label htmlFor="externalInstitutions" className="block text-gray-700 font-bold mb-2">Institutions:</label>
+                <input
+                  type="text"
+                  name="ExternalInstitutions"
+                  id="externalInstitutions"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.ExternalInstitutions}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="externalInstitutionsNature" className="block text-gray-700 font-bold mb-2">Description:</label>
+                <textarea
+                  name="ExternalInstitutionsNature"
+                  id="externalInstitutionsNature"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.ExternalInstitutionsNature}
+                  onChange={handleInputChange}
+                  maxLength={500}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="externalIndustry" className="block text-gray-700 font-bold mb-2">Industry:</label>
+                <input
+                  type="text"
+                  name="ExternalIndustry"
+                  id="externalIndustry"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.ExternalIndustry}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="externalIndustryNature" className="block text-gray-700 font-bold mb-2">Description:</label>
+                <textarea
+                  name="ExternalIndustryNature"
+                  id="externalIndustryNature"
+                  className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
+                  value={lecturerForm.ExternalIndustryNature}
+                  onChange={handleInputChange}
+                  maxLength={500}
+                />
+              </div>
+            </div>
+            <div className='grid grid-cols-2 gap-4 mt-8'>
+              <div>
+                <button
+                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
+                  onClick={handlePreviousSection}
+                >
+                  Previous
+                </button>
+              </div>
+              <div>
+              <button
+                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
+                  onClick={handleNextSection}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        );
       default:
-        return null;
+        return (
+          <div className='flex flex-col items-center reviewbackground m-0 p-0'>
+            <h1 className='text-gray-500 text-3xl font-semibold'>Review Your Information</h1>
+            <div className='mt-4'>
+              <h2 className='text-lg font-semibold'>Personal Information</h2>
+              <p>First Name: {lecturerForm.Firstname}</p>
+              <p>Middle Name: {lecturerForm.MiddleName}</p>
+              <p>Last Name: {lecturerForm.Lastname}</p>
+              <p>Gender: {lecturerForm.Gender}</p>
+              <p>Email: {lecturerForm.Email}</p>
+            </div>
+            <div className='mt-4'>
+              <h2 className='text-lg font-semibold'>Academic Information</h2>
+              <p>Qualification Type: {lecturerForm.QualificationType}</p>
+              <p>Year of Study: {lecturerForm.YearOfStudy}</p>
+              <p>Year of Completion: {lecturerForm.YearOfCompletion}</p>
+              <p>Professional Qualification: {lecturerForm.ProfessionalQualification}</p>
+              <p>Professional Affiliation: {lecturerForm.ProfessionalAffiliation}</p>
+            </div>
+            <div className='mt-4'>
+              <h2 className='text-lg font-semibold'>Education Information</h2>
+              <p>Education Level: {lecturerForm.EducationLevel}</p>
+              <p>Institution: {lecturerForm.Institution}</p>
+              <p>Roles: {lecturerForm.Roles}</p>
+              <p>Duties: {lecturerForm.Duties}</p>
+            </div>
+            <div className='mt-4'>
+              <h2 className='text-lg font-semibold'>Research Information</h2>
+              <p>Research Areas: {lecturerForm.ResearchAreas}</p>
+              <p>Current Research Area: {lecturerForm.CurrentResearchArea}</p>
+              <p>Research Collaborations: {lecturerForm.ResearchCollaborations}</p>
+            </div>
+            <div className='mt-4'>
+              <h2 className='text-lg font-semibold'>Courses Information</h2>
+              <p>Courses Taught: {lecturerForm.CoursesTaught}</p>
+              <p>Year: {lecturerForm.CourseYear}</p>
+              <p>Programs: {lecturerForm.Programs}</p>
+            </div>
+            <div className='mt-4'>
+              <h2 className='text-lg font-semibold'>Department Role Information</h2>
+              <p>Role: {lecturerForm.DepartmentRole}</p>
+              <p>Year: {lecturerForm.DepartmentRoleYear}</p>
+            </div>
+            <div className='mt-4'>
+              <h2 className='text-lg font-semibold'>External Links</h2>
+              <p>Institutions: {lecturerForm.ExternalInstitutions}</p>
+              <p>Nature: {lecturerForm.ExternalInstitutionsNature}</p>
+              <p>Industry: {lecturerForm.ExternalIndustry}</p>
+              <p>Nature: {lecturerForm.ExternalIndustryNature}</p>
+            </div>
+            <div className='grid grid-cols-2 gap-4 mt-4'>
+              <div>
+                <button
+                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
+                  onClick={handlePreviousSection}
+                >
+                  Previous
+                </button>
+              </div>
+              <div>
+                <button
+                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
+                  onClick={() => alert('Form submitted!')}
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        );
     }
   };
 
   return (
-    <div className='max-w-lg mx-auto p-4'>
+    <div className='mt-10 h-screen w-screen'>
       {renderSection()}
     </div>
   );
