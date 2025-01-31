@@ -1,7 +1,7 @@
 import React from 'react';
 import { AiOutlineUser } from 'react-icons/ai';
 import { MdCastForEducation } from 'react-icons/md';
-import "../index.css"
+import "../../../index.css"
 import {Link} from 'react-router-dom'
 
 function Signup() {
