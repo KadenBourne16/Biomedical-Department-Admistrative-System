@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import '../style/components.css';
-import '../index.css'
+import '../../../../style/components.css';
+import '../../../../index.css'
 import axios from 'axios'
 
 function SignupLecturer() {
@@ -169,7 +169,6 @@ function SignupLecturer() {
               <div className="mb-4">
                 <div className='flex flex-row mb-2 space-x-4'>
                   <label htmlFor="qualificationType" className="block text-gray-700 font-bold mb-2">Qualification Type:</label>
-                  <button className='px-6 p-1 text-white font-bold bg-green-500 rounded-md'>Add Qualification</button>
                 </div>
                 <select
                   name="QualificationType"

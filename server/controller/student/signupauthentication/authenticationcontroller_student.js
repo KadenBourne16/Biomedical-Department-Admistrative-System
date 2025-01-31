@@ -1,5 +1,6 @@
 const db = require('../../../database/databaseconfiguration'); // Assuming this is your database connection
 
+
 exports.signupstudent = async (req, res) => {
     const studentData = req.body;
     console.log(studentData);
