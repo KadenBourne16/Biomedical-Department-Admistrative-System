@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import '../../../../style/components.css';
-import '../../../../index.css'
-import axios from 'axios'
+import '../../../../index.css';
+import axios from 'axios';
 
 function SignupLecturer() {
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: currentYear - 1950 + 1 }, (_, i) => 1950 + i);
 
-  const [successMessage, setSuccessMessage] = useState(false)
+  const [successMessage, setSuccessMessage] = useState(false);
+  const [errorMessages, setErrorMessages] = useState({});
   const [lecturerForm, setLecturerForm] = useState({
     Firstname: "",
     MiddleName: "",
     Lastname: "",
     Gender: "",
     Email: "",
+    password: "biomedical_lecturer",
     QualificationType: "",
     YearOfStudy: "",
     YearOfCompletion: "",
@@ -44,25 +46,63 @@ function SignupLecturer() {
       ...lecturerForm,
       [name]: value
     });
+    // Clear error message for the field being edited
+    setErrorMessages({
+      ...errorMessages,
+      [name]: ""
+    });
+  };
+
+  const validateFields = () => {
+    const errors = {};
+    if (section === 0) {
+      if (!lecturerForm.Firstname) errors.Firstname = "First Name is required.";
+      if (!lecturerForm.Lastname) errors.Lastname = "Last Name is required.";
+      if (!lecturerForm.Gender) errors.Gender = "Gender is required.";
+      if (!lecturerForm.Email) errors.Email = "Email is required.";
+    } else if (section === 1) {
+      if (!lecturerForm.QualificationType) errors.QualificationType = "Qualification Type is required.";
+    } else if (section === 2) {
+      if (!lecturerForm.EducationLevel) errors.EducationLevel = "Education Level is required.";
+      if (!lecturerForm.Institution) errors.Institution = "Institution is required.";
+    } else if (section === 3) {
+      if (!lecturerForm.ResearchAreas) errors.ResearchAreas = "Research Areas are required.";
+    } else if (section === 4) {
+      if (!lecturerForm.CoursesTaught) errors.CoursesTaught = "Courses Taught is required.";
+    } else if (section === 5) {
+      if (!lecturerForm.DepartmentRole) errors.DepartmentRole = "Department Role is required.";
+    } else if (section === 6) {
+      if (!lecturerForm.ExternalInstitutions) errors.ExternalInstitutions = "External Institutions are required.";
+    }
+    return errors;
   };
 
   const handleNextSection = () => {
-    setSection(section + 1);
+    const errors = validateFields();
+    if (Object.keys(errors).length > 0) {
+      setErrorMessages(errors);
+    } else {
+      setSection(section + 1);
+    }
   };
 
-  const handlePreviousSection = () => {
-    setSection(section - 1);
-  };
+  const handlePreviousSection = () => { setSection(section - 1); };
 
-  const handleSubmitToBackend = async(e) => {
-      try{
+  const handleSubmitToBackend = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+    const errors = validateFields();
+    if (Object.keys(errors).length > 0) {
+      setErrorMessages(errors);
+    } else {
+      try {
         console.log(lecturerForm);
         const res = await axios.post('http://localhost:3300/bdas/signuplecturer', lecturerForm);
-        successMessage(true);
-      }catch(err){
-        console.log("Error occured", err)
+        setSuccessMessage(true);
+      } catch (err) {
+        console.log("Error occurred", err);
       }
-  }
+    }
+  };
 
   const renderSection = () => {
     switch (section) {
@@ -82,6 +122,7 @@ function SignupLecturer() {
                   onChange={handleInputChange}
                   required
                 />
+                {errorMessages.Firstname && <p className="text-red-500">{errorMessages.Firstname}</p>}
               </div>
 
               <div className="mb-4">
@@ -107,6 +148,7 @@ function SignupLecturer() {
                   onChange={handleInputChange}
                   required
                 />
+                {errorMessages.Lastname && <p className="text-red-500">{errorMessages.Lastname}</p>}
               </div>
 
               <div className="mb-4">
@@ -123,6 +165,7 @@ function SignupLecturer() {
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                 </select>
+                {errorMessages.Gender && <p className="text-red-500">{errorMessages.Gender}</p>}
               </div>
 
               <div className="mb-4">
@@ -136,6 +179,7 @@ function SignupLecturer() {
                   onChange={handleInputChange}
                   required
                 />
+                {errorMessages.Email && <p className="text-red-500">{errorMessages.Email}</p>}
               </div>
               <div className='grid grid-cols-2 gap-4 mt-8'>
                 <div>
@@ -181,6 +225,7 @@ function SignupLecturer() {
                   <option value="Masters">Masters</option>
                   <option value="PHD">PHD</option>
                 </select>
+                {errorMessages.QualificationType && <p className="text-red-500">{errorMessages.QualificationType}</p>}
               </div>
               <div className="mb-4">
                 <label htmlFor="yearOfStudy" className="block text-gray-700 font-bold mb-2">Year of Study:</label>
@@ -207,7 +252,7 @@ function SignupLecturer() {
             </div>
             <div className='flex flex-col items-center mt-4 space-y-1'>
               <div className="mb-4">
-                <label htmlFor="professionalQualification" className="block text-gray-700 font-bold mb-2">Professional Qualification:</label>
+                <label htmlFor="professionalQualification" className="block text-gray-700 font-bold mb-2 ">Professional Qualification:</label>
                 <input
                   type="text"
                   name="ProfessionalQualification"
@@ -265,6 +310,7 @@ function SignupLecturer() {
                   value={lecturerForm.EducationLevel}
                   onChange={handleInputChange}
                 />
+                {errorMessages.EducationLevel && <p className="text-red-500">{errorMessages.EducationLevel}</p>}
               </div>
               <div className="mb-4">
                 <label htmlFor="institution" className="block text-gray-700 font-bold mb-2">Institution:</label>
@@ -276,6 +322,7 @@ function SignupLecturer() {
                   value={lecturerForm.Institution}
                   onChange={handleInputChange}
                 />
+                {errorMessages.Institution && <p className="text-red-500">{errorMessages.Institution}</p>}
               </div>
               <div className="mb-4">
                 <label htmlFor="roles" className="block text-gray-700 font-bold mb-2">Roles:</label>
@@ -323,8 +370,8 @@ function SignupLecturer() {
         );
       case 3:
         return (
-          <div className='main-container flex flex-col items-center signupbackground h-screen'>
-            <h1 className='text-gray-500 text-3xl font-semibold mb-4'>Research Information</h1>
+          <div className='main-container flex flex-col items-center signupbackground h-screen '>
+            <h1 className='text-gray-500 text-3xl font-semibold mb-6'>Research Information</h1>
             <div className='flex flex-col items-center space-y-4'>
               <div className="mb-4">
                 <label htmlFor="researchAreas" className="block text-gray-700 font-bold mb-2">Research Areas:</label>
@@ -336,6 +383,7 @@ function SignupLecturer() {
                   value={lecturerForm.ResearchAreas}
                   onChange={handleInputChange}
                 />
+                {errorMessages.ResearchAreas && <p className="text-red-500">{errorMessages.ResearchAreas}</p>}
               </div>
               <div className="mb-4">
                 <label htmlFor="currentResearchArea" className="block text-gray-700 font-bold mb-2">Current Research Area:</label>
@@ -361,7 +409,7 @@ function SignupLecturer() {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4 mt-8">
-            <div>
+              <div>
                 <button
                   className="border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 "
                   onClick={handlePreviousSection}
@@ -395,11 +443,12 @@ function SignupLecturer() {
                   value={lecturerForm.CoursesTaught}
                   onChange={handleInputChange}
                 />
+                {errorMessages.CoursesTaught && <p className="text-red-500">{errorMessages.CoursesTaught}</p>}
               </div>
               <div className="mb-4">
                 <label htmlFor="courseYear" className="block text-gray-700 font-bold mb-2">Year:</label>
                 <input
-                  type="text"
+                  type="date"
                   name="CourseYear"
                   id="courseYear"
                   className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
@@ -422,7 +471,7 @@ function SignupLecturer() {
             <div className='grid grid-cols-2 gap-4 mt-8'>
               <div>
                 <button
-                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
+                  className='border-2 border-gray- 200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
                   onClick={handlePreviousSection}
                 >
                   Previous
@@ -441,8 +490,8 @@ function SignupLecturer() {
         );
       case 5:
         return (
-          <div className='main-container flex flex-col items-center signupbackground h-screen '>
-            <h1 className='text-gray-500 text-3xl font-semibold'>Department Role Information</h1>
+          <div className='main-container flex flex-col items-center signupbackground h-screen'>
+            <h1 className='text-gray-500 text-3xl font-semibold mb-6'>Department Role Information</h1>
             <div className='flex flex-col items-center space-y-4'>
               <div className="mb-4">
                 <label htmlFor="departmentRole" className="block text-gray-700 font-bold mb-2">Role:</label>
@@ -454,21 +503,18 @@ function SignupLecturer() {
                   value={lecturerForm.DepartmentRole}
                   onChange={handleInputChange}
                 />
+                {errorMessages.DepartmentRole && <p className="text-red-500">{errorMessages.DepartmentRole}</p>}
               </div>
               <div className="mb-4">
                 <label htmlFor="departmentRoleYear" className="block text-gray-700 font-bold mb-2">Year:</label>
-                <select
+                <input
+                  type="date"
                   name="DepartmentRoleYear"
                   id="departmentRoleYear"
                   className='shadow appearance-none border rounded w-96 py-2 px-3 text-gray-700'
                   value={lecturerForm.DepartmentRoleYear}
                   onChange={handleInputChange}
-                >
-                  <option value="">Select Year</option>
-                  {years.map(year => (
-                    <option key={year} value={year}>{year}</option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
             <div className='grid grid-cols-2 gap-4 mt-8'>
@@ -493,8 +539,8 @@ function SignupLecturer() {
         );
       case 6:
         return (
-          <div className='main-container flex flex-col items-center signupbackground h-screen '>
-            <h1 className='text-gray-500 text-3xl font-semibold'>External Links</h1>
+          <div className='main-container flex flex-col items-center signupbackground h-screen'>
+            <h1 className='text-gray-500 text-3xl font-semibold mb-6'>External Links</h1>
             <div className='flex flex-col items-center space-y-4'>
               <div className="mb-4">
                 <label htmlFor="externalInstitutions" className="block text-gray-700 font-bold mb-2">Institutions:</label>
@@ -506,6 +552,7 @@ function SignupLecturer() {
                   value={lecturerForm.ExternalInstitutions}
                   onChange={handleInputChange}
                 />
+                {errorMessages.ExternalInstitutions && <p className="text-red-500">{errorMessages.ExternalInstitutions}</p>}
               </div>
               <div className="mb-4">
                 <label htmlFor="externalInstitutionsNature" className="block text-gray-700 font-bold mb-2">Description:</label>
@@ -528,9 +575,10 @@ function SignupLecturer() {
                   value={lecturerForm.ExternalIndustry}
                   onChange={handleInputChange}
                 />
+                {errorMessages.ExternalIndustry && <p className="text-red-500">{errorMessages.ExternalIndustry}</p>}
               </div>
               <div className="mb-4">
-                <label htmlFor="externalIndustryNature" className="block text-gray-700 font-bold mb-2">Description:</label>
+                <label htmlFor="externalIndustryNature" className="block text -gray-700 font-bold mb-2">Description:</label>
                 <textarea
                   name="ExternalIndustryNature"
                   id="externalIndustryNature"
@@ -551,7 +599,7 @@ function SignupLecturer() {
                 </button>
               </div>
               <div>
-              <button
+                <button
                   className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
                   onClick={handleNextSection}
                 >
@@ -623,7 +671,7 @@ function SignupLecturer() {
               </div>
               <div>
                 <button
-                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
+                  className='border-2 border-blue- 200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
                   onClick={handleSubmitToBackend}
                 >
                   Submit

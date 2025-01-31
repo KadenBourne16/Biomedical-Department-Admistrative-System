@@ -1,4 +1,5 @@
 const db = require('../../database/databaseconfiguration'); // Assuming this is your database connection
+const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
 
 exports.signuplecturer = async (req, res) => {
     const lecturerData = req.body;
@@ -18,6 +19,7 @@ exports.signuplecturer = async (req, res) => {
                     lastName VARCHAR(255),
                     gender VARCHAR(255),
                     email VARCHAR(255),
+                    password VARCHAR(255),  // Added password field
                     qualificationType VARCHAR(255),
                     yearOfStudy DATE,
                     yearOfCompletion DATE,
@@ -38,12 +40,16 @@ exports.signuplecturer = async (req, res) => {
                     externalInstitutions VARCHAR(255),
                     externalInstitutionsNature VARCHAR(255),
                     externalIndustry VARCHAR(50),
-                    externalIndustryNature VARCHAR(50),
+                    externalIndustryNature VARCHAR(50)
                 );
             `;
 
             await db.query(createTableQuery);
         }
+
+        // Hash the password before inserting
+        const hashedPassword = await bcrypt.hash(lecturerData.password, 10);
+        lecturerData.password = hashedPassword;
 
         // Insert the lecturer data
         await insertLecturerData(lecturerData, res);
@@ -57,26 +63,27 @@ const insertLecturerData = async (lecturerData, res) => {
     const insertQuery = `
         INSERT INTO lecturer (
             firstName, middleName, lastName, gender, email,
-            qualificationType, yearOfStudy, yearOfCompletion, professionalQualification, professionalAffiliation,
-            educationLevel, institution, roles, duties, researchAreas,
-            currentResearchArea, researchCollaborations, coursesTaught, courseYear,
-            programs, departmentRole, departmentRoleYear,
-            externalInstitutions, externalInstitutionsNature, externalIndustry, externalIndustryNature,
+            password, qualificationType, yearOfStudy, yearOfCompletion, professionalQualification, 
+            professionalAffiliation, educationLevel, institution, roles, duties, 
+            researchAreas, currentResearchArea, researchCollaborations, coursesTaught, 
+            courseYear, programs, departmentRole, departmentRoleYear, 
+            externalInstitutions, externalInstitutionsNature, externalIndustry, externalIndustryNature
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-            ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?
         )
     `;
 
     const values = [
-        lecturerData.Firstname,
-        lecturerData.MiddleName,
-        lecturerData.Lastname,
-        lecturerData.Gender,
-        lecturerData.Email,
+        lecturerData.Firstname,  // Change to firstName
+        lecturerData.MiddleName,  // Change to middleName
+        lecturerData.Lastname,    // Change to lastName
+        lecturerData.Gender,      // Change to gender
+        lecturerData.Email,       // Change to email
+        lecturerData.password,    // Use the hashed password
         lecturerData.QualificationType,
-        lecturerData.YearOfStudy,
-        lecturerData.YearOfCompletion,
+        lecturerData.YearOfStudy,  // Ensure this is in the correct format (if needed)
+        lecturerData.YearOfCompletion,  // Ensure this is in the correct format (if needed)
         lecturerData.ProfessionalQualification,
         lecturerData.ProfessionalAffiliation,
         lecturerData.EducationLevel,
@@ -87,10 +94,10 @@ const insertLecturerData = async (lecturerData, res) => {
         lecturerData.CurrentResearchArea,
         lecturerData.ResearchCollaborations,
         lecturerData.CoursesTaught,
-        lecturerData.CourseYear,
+        lecturerData.CourseYear,  // Ensure this is in the correct format (if needed)
         lecturerData.Programs,
         lecturerData.DepartmentRole,
-        lecturerData.DepartmentRoleYear,
+        lecturerData.DepartmentRoleYear,  // Ensure this is in the correct format (if needed)
         lecturerData.ExternalInstitutions,
         lecturerData.ExternalInstitutionsNature,
         lecturerData.ExternalIndustry,

@@ -7,7 +7,7 @@ const LoginForm = () => {
     return (    
         <div className='flex min-h-screen items-center justify-center bg-gray-100'>
             <div>
-                <h1>Biomedical Department Administrative System</h1>
+                <h1 className='text-4xl text-blue-700 font-bold mr-16'>Biomedical Department Administrative System</h1>
             </div>
             <div className='bg-white shadow-lg rounded-lg p-8 w-96'>
                 <h1 className='text-2xl font-bold text-center mb-6'>Login</h1>
