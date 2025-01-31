@@ -1,26 +1,18 @@
-const db = require('../database/databaseconfiguration'); // Assuming this is your database connection
-const jwt = require('../middleware/auth0');
+const db = require('../../../database/databaseconfiguration'); // Assuming this is your database connection
 
-exports.signupstudent = (req, res) => {
+exports.signupstudent = async (req, res) => {
     const studentData = req.body;
     console.log(studentData);
 
-    // SQL query to check if the table exists
-    const checkTableQuery = `
-        SELECT to_regclass('public.student');
-    `;
-
-    db.query(checkTableQuery, (err, result) => {
-        if (err) {
-            console.error('Error checking table existence:', err);
-            return res.status(500).send('Internal Server Error');
-        }
-
+    try {
+        // Check if the table exists
+        const [tables] = await db.query("SHOW TABLES LIKE 'student'");
+        
         // If the table does not exist, create it
-        if (result.rows[0].to_regclass === null) {
+        if (tables.length === 0) {
             const createTableQuery = `
                 CREATE TABLE student (
-                    id SERIAL PRIMARY KEY,
+                    id INT AUTO_INCREMENT PRIMARY KEY,
                     indexNo VARCHAR(255),
                     entryMode VARCHAR(255),
                     entryLevel VARCHAR(255),
@@ -51,23 +43,18 @@ exports.signupstudent = (req, res) => {
                 );
             `;
 
-            db.query(createTableQuery, (err) => {
-                if (err) {
-                    console.error('Error creating table:', err);
-                    return res.status(500).send('Internal Server Error');
-                }
-
-                // After creating the table, insert the student data
-                insertStudentData(studentData, res);
-            });
-        } else {
-            // If the table exists, insert the student data
-            insertStudentData(studentData, res);
+            await db.query(createTableQuery);
         }
-    });
+
+        // Insert the student data
+        await insertStudentData(studentData, res);
+    } catch (err) {
+        console.error('Error:', err);
+        return res.status(500).send('Internal Server Error');
+    }
 };
 
-const insertStudentData = (studentData, res) => {
+const insertStudentData = async (studentData, res) => {
     const insertQuery = `
         INSERT INTO student (
             indexNo, entryMode, entryLevel, currentLevel, program,
@@ -77,9 +64,9 @@ const insertStudentData = (studentData, res) => {
             personalInformation, institutionalEmail, addressLine,
             addressLine2, addressCountry, martialStatus, religion,
             digitalAddress
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
-            $11, $12, $13, $14, $15, $16, $17, $18, $19, $20,
-            $21, $22, $23, $24, $25, $26, $27
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?, ?, ?
         )
     `;
 
@@ -113,11 +100,11 @@ const insertStudentData = (studentData, res) => {
         studentData.digitalAddress
     ];
 
-    db.query(insertQuery, values, (err) => {
-        if (err) {
-            console.error('Error inserting student data:', err);
-            return res.status(500).send('Internal Server Error');
-        }
+    try {
+        await db.query(insertQuery, values);
         res.status(201).send('Student data inserted successfully');
-    });
+    } catch (err) {
+        console.error('Error inserting student data:', err);
+        return res.status(500).send('Internal Server Error');
+    }
 };
