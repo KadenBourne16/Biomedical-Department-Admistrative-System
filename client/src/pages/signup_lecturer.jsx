@@ -56,7 +56,8 @@ function SignupLecturer() {
 
   const handleSubmitToBackend = async(e) => {
       try{
-        const res = axios.post('https://localhost:3000/signupslecturer', lecturerForm);
+        console.log(lecturerForm);
+        const res = await axios.post('http://localhost:3300/bdas/signuplecturer', lecturerForm);
         successMessage(true);
       }catch(err){
         console.log("Error occured", err)
