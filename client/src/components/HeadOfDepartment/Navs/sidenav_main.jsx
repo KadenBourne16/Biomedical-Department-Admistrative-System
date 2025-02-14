@@ -14,15 +14,17 @@ const SideNav = () => {
       <nav className="flex-1">
         <ul className="space-y-5 font-semibold">
         <Link
-              to="home"
+              to="/hod/dashboard/home"
             >
             <li className="p-2 hover:bg-blue-700 cursor-pointer flex">
                  <FaHome className="mr-2" /> Home
             </li>
         </Link>
-        <li className="p-2 hover:bg-blue-700 cursor-pointer flex">
-            <FaKey className="mr-2" /> Key Indicators
-          </li>
+        <Link to="/hod/dashboard/key_indicators">
+            <li className="p-2 hover:bg-blue-700 cursor-pointer flex">
+              <FaKey className="mr-2" /> Key Indicators
+            </li>
+        </Link>
           <li>
             <div className="flex items-center justify-between p-2 cursor-pointer hover:bg-blue-700" onClick={() => setAcademicOpen(!academicOpen)}>
               <span className="flex items-center">
@@ -65,9 +67,11 @@ const SideNav = () => {
           <li className="flex p-2 hover:bg-blue-700 cursor-pointer">
             <FaBook className="mr-2" /> View Syllabus
           </li>
-          <li className="flex p-2 hover:bg-blue-700 cursor-pointer">
-            <FaNewspaper className="mr-2" /> View and Update News
-          </li>
+          <Link to={"/hod/dashboard/updatenews"}>
+            <li className="flex p-2 hover:bg-blue-700 cursor-pointer">
+              <FaNewspaper className="mr-2" /> View and Update News
+            </li>
+          </Link>
         </ul>
       </nav>
     </div>

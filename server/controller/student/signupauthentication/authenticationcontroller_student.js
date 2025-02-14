@@ -1,5 +1,5 @@
 const db = require('../../../database/databaseconfiguration'); // Assuming this is your database connection
-
+const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
 
 exports.signupstudent = async (req, res) => {
     const studentData = req.body;
@@ -40,12 +40,17 @@ exports.signupstudent = async (req, res) => {
                     addressCountry VARCHAR(255),
                     martialStatus VARCHAR(50),
                     religion VARCHAR(50),
-                    digitalAddress VARCHAR(255)
+                    digitalAddress VARCHAR(255),
+                    password VARCHAR(255)  -- Added password field
                 );
             `;
 
             await db.query(createTableQuery);
         }
+
+        // Hash the password before inserting
+        const hashedPassword = await bcrypt.hash(studentData.password, 10);
+        studentData.password = hashedPassword; // Store the hashed password
 
         // Insert the student data
         await insertStudentData(studentData, res);
@@ -64,10 +69,10 @@ const insertStudentData = async (studentData, res) => {
             nationality, hometown, cityOfBirth, mobileNumber,
             personalInformation, institutionalEmail, addressLine,
             addressLine2, addressCountry, martialStatus, religion,
-            digitalAddress
+            digitalAddress, password  -- Include password in the insert query
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-            ?, ?, ?, ?, ?, ?, ?
+            ?, ?, ?, ?, ?, ?, ?, ?
         )
     `;
 
@@ -98,7 +103,8 @@ const insertStudentData = async (studentData, res) => {
         studentData.addressCountry,
         studentData.martialStatus,
         studentData.religion,
-        studentData.digitalAddress
+        studentData.digitalAddress,
+        studentData.password  // Use the hashed password
     ];
 
     try {

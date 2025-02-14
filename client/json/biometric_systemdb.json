@@ -1,0 +1,25 @@
+{
+  "News": [
+    {
+      "id": "cede",
+      "title": "Information",
+      "description": "Pastor",
+      "note": "Brief",
+      "date": ""
+    },
+    {
+      "id": "b14c",
+      "title": "James",
+      "description": "Oduro",
+      "note": "Gyamfi",
+      "date": ""
+    },
+    {
+      "id": "e8dd",
+      "title": "Orientation next week",
+      "description": "All faculty deans are to meet in ababentil",
+      "note": "Should not be late",
+      "date": ""
+    }
+  ]
+}

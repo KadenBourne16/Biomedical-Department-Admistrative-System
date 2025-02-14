@@ -1,0 +1,20 @@
+[
+    {
+      "Title": "New Policy Announced",
+      "Description": "The company has announced a new policy to improve employee benefits.",
+      "Note": "Please review the policy carefully.",
+      "Date of post": "2022-01-01"
+    },
+    {
+      "Title": "System Maintenance Scheduled",
+      "Description": "The system will be down for maintenance on Friday at 5pm.",
+      "Note": "Please save your work before the maintenance window.",
+      "Date of post": "2022-02-15"
+    },
+    {
+      "Title": "New Project Launch",
+      "Description": "The company is launching a new project to develop a cutting-edge technology.",
+      "Note": "Please attend the project kickoff meeting on Monday.",
+      "Date of post": "2022-03-01"
+    }
+]

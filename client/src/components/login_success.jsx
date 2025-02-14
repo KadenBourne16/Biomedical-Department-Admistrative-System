@@ -1,11 +1,12 @@
 import React from 'react'
 import { FiCheck } from "react-icons/fi";
+import '../style/login_success.css'
 
 
 function login_success() {
   return (
-    <div className='h-screen w-screen flex items-center justify-center'>
-        <div className='w-fit h-20 grid grid-cols-3 shadow-lg shadow-black rounded-md text-center justify-center'>
+    <div className='h-screen w-screen flex items-center justify-center success_background'>
+        <div className='w-fit h-20 grid grid-cols-3 shadow-lg shadow-black rounded-md text-center justify-center bg-white'>
             <div className='flex items-center justify-center bg-blue-800 rounded-xl shadow-lg shadow-black'>
                 <FiCheck size={70} className='h-1/2 w-1/2 text-white font-bold'/>
             </div>

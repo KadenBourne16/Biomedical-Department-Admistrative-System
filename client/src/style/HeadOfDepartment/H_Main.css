@@ -1,0 +1,30 @@
+.dashboard_main_container{
+    display: grid;
+    height: calc(100vh - 2em);
+    width: calc(100vw - 16em);
+    gap: 5px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 0.5fr 1fr 1fr 1fr;    
+    grid-template-areas: 
+    "section1 section1 section1 section1 section1"
+    "section5 section3 section3 section2 section2"
+    "section5 section3 section3 section2 section2"
+    "section4 section4 section4 section2 section2"
+    ;
+}
+
+.section1{
+    grid-area: section1;
+}
+.section2{
+    grid-area: section2;
+}
+.section3{
+    grid-area: section3;
+}
+.section4{
+    grid-area: section4;
+}
+.section5{
+    grid-area: section5;
+}

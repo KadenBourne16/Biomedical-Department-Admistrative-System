@@ -1,5 +1,10 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from 'axios';
+import SuccessMessageFile from '../../../../components/login_success'
+import {useNavigate} from "react-router-dom"
+import '../../../../index.css'
+import { Link } from "react-router-dom";
+import { FaHome } from 'react-icons/fa';
 
 function SignupStudent() {
   const [formData, setFormData] = useState({
@@ -32,6 +37,7 @@ function SignupStudent() {
     martialStatus: "",
     religion: "",
     digitalAddress: "",
+    password: "biomedical_student"
   });
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -55,8 +61,44 @@ function SignupStudent() {
     if (!/^\d+$/.test(formData.mobileNumber)) {
       newErrors.mobileNumber = "Mobile number must contain only digits";
     }
+
+    if(formData.prefix === "Mr" && formData.gender === "Female" ){
+      newErrors.prefix = "Prefix and Gender doesn't match"
+      newErrors.gender = "Gender and prefix doesn't match"
+    }
+
+    if(formData.dateOfAdmission > formData.dateOfCompletion){
+      newErrors.dateOfAdmission = "Date of admission cannot be after date of completion"
+      newErrors.dateOfCompletion = "Date of completion cannot be before date of admission"
+    }
+
+    if(formData.entryLevel > formData.currentLevel){
+      newErrors.entryLevel = "Entry level cannot be more than current level"
+      newErrors.currentLevel = "Current level cannot be more than entry level"
+    }
+
+    console.log(formData.dateOfAdmission)
+    console.log(newErrors);
     return newErrors;
   };
+
+  const navigate = useNavigate()
+  const [successmessage, setSuccessMessage] = useState(false)
+
+  useEffect(() => {
+    let timeoutcounter;
+    if(successmessage){
+      timeoutcounter = setTimeout(() => {
+          setSuccessMessage(false)
+      }, 3000)
+    }
+
+    return() => {
+      if(timeoutcounter){
+        clearTimeout(timeoutcounter)
+      }
+    }
+  }, [successmessage])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,10 +106,18 @@ function SignupStudent() {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
+    }else{
+       setErrors({})
     }
 
     try {
       const res = await axios.post('http://localhost:3300/bdas/signupstudent', formData);
+      if(res){
+        setSuccessMessage(true);
+      }else{
+        navigate("/")
+      }
+
       console.log("Response:", res.data);
     } catch (err) {
       console.log("Error occurred", err);
@@ -88,7 +138,7 @@ function SignupStudent() {
     switch (currentStep) {
       case 1:
         return (
-          <div>
+          <div className="h-screen">
             <h2 className="text-2xl font-bold mb-4">Program Information</h2>
             <div className="mb-4">
               <label htmlFor="indexNo" className="block text-gray-700 font-bold mb-2">
@@ -118,6 +168,7 @@ function SignupStudent() {
                 <option value="Direct Entry">Direct Entry</option>
                 <option value="Matured Entry">Matured Entry</option>
               </select>
+              {errors.entryLevel && <p className="text-red-500">{errors.entryLevel}</p>}
             </div>
             <div className="mb-4">
               <label htmlFor="entryLevel" className="block text-gray-700 font-bold mb-2">
@@ -154,6 +205,7 @@ function SignupStudent() {
                 <option value="300">300</option>
                 <option value="400">400</option>
               </select>
+              {errors.entryLevel && <p className="text-red-500">{errors.entryLevel}</p>}
             </div>
             <div className="mb-4">
               <label htmlFor="program" className="block text-gray-700 font-bold mb-2">
@@ -180,6 +232,7 @@ function SignupStudent() {
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
               />
+              {errors.dateOfAdmission && <p className="text-red-500">{errors.dateOfAdmission}</p>}
             </div>
             <div className="mb-4">
               <label htmlFor="dateOfCompletion" className="block text-gray-700 font-bold mb-2">
@@ -193,6 +246,7 @@ function SignupStudent() {
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
               />
+              {errors.dateOfCompletion && <p className="text-red-500">{errors.dateOfCompletion}</p>}
             </div>
             <div className="mb-4">
               <label htmlFor="hall" className="block text-gray-700 font-bold mb-2">
@@ -236,6 +290,7 @@ function SignupStudent() {
                 <option value="Mrs">Mrs</option>
                 <option value="Ms">Ms</option>
               </select>
+              {errors.prefix && <p className="text-red-500">{errors.prefix}</p>}
             </div>
             <div className="mb-4">
               <label htmlFor="firstName" className="block text-gray-700 font-bold mb-2">
@@ -291,6 +346,7 @@ function SignupStudent() {
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
+              {errors.gender && <p className="text-red-500">{errors.gender}</p>}
             </div>
             <div className="mb-4">
               <label htmlFor="dateOfBirth" className="block text-gray-700 font-bold mb-2">
@@ -381,8 +437,7 @@ function SignupStudent() {
                 name="institutionalEmail"
                 value={formData.institutionalEmail}
                 onChange={handleChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
- />
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"/>
              {errors.institutionalEmail && <p className="text-red-500">{errors.institutionalEmail}</p>}
             </div>
             <div className="mb-4">
@@ -492,6 +547,16 @@ function SignupStudent() {
 
   return (
     <div className="signupbackground">
+      {successmessage && (
+        <div>
+          <div className={`modal-overlay ${successmessage ? "open": ""}`}>
+            <SuccessMessageFile />
+          </div>
+        </div>
+      )}
+      <Link to="/" className="absolute top-4 right-4 text-gray-700 hover:text-blue-500">
+              <FaHome className='text-4xl text-blue-500'/>
+      </Link>
       <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-4">
         {renderStep()}
       </form>
