@@ -17,3 +17,32 @@
     background-size: cover;
     background-repeat: no-repeat;
 }
+
+
+.Background1{
+    background-image: url('../public/Background1.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed; /* Position it fixed to cover the entire viewport */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    display: flex; /* Use flexbox to center the modal */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    z-index: 1000; /* Ensure it appears above other content */
+    opacity: 0; /* Start hidden */
+    transition: opacity 0.3s ease; /* Smooth transition for showing/hiding */
+}
+
+/* Show the modal overlay when the class 'open' is added */
+.modal-overlay.open {
+    opacity: 1; /* Fully visible */
+}

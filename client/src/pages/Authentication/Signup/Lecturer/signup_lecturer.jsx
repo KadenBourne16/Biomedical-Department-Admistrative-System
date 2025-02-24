@@ -285,10 +285,10 @@ function SignupLecturer() {
                 />
               </div>
             </div>
-            <div className='grid grid-cols-2 gap-4 mt-8 w-full'>
+            <div className='flex flex-row gap-5'>
               <div>
                 <button
-                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white w-full'
+                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
                   onClick={handlePreviousSection}
                   disabled={section === 0}
                 >
@@ -297,7 +297,7 @@ function SignupLecturer() {
               </div>
               <div>
                 <button
-                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white w-full'
+                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
                   onClick={handleNextSection}
                 >
                   Next
@@ -359,10 +359,10 @@ function SignupLecturer() {
                 />
               </div>
             </div>
-            <div className='grid grid-cols-2 gap-4 mt-8 w-full'>
+            <div className='flex flex-row gap-5'>
               <div>
                 <button
-                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white w-full'
+                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
                   onClick={handlePreviousSection}
                   disabled={section === 0}
                 >
@@ -371,7 +371,7 @@ function SignupLecturer() {
               </div>
               <div>
                 <button
-                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white w-full'
+                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
                   onClick={handleNextSection}
                 >
                   Next
@@ -421,10 +421,10 @@ function SignupLecturer() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4 mt-8 w-full">
+            <div className="flex flex-row gap-5">
               <div>
                 <button
-                  className="border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 w-full"
+                  className="border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600"
                   onClick={handlePreviousSection}
                 >
                   Previous
@@ -432,7 +432,7 @@ function SignupLecturer() {
               </div>
               <div>
                 <button
-                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white w-full'
+                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
                   onClick={handleNextSection}
                 >
                   Next
@@ -482,10 +482,10 @@ function SignupLecturer() {
                 />
               </div>
             </div>
-            <div className='grid grid-cols-2 gap-4 mt-8 w-full'>
+            <div className='flex flex-row gap-5'>
               <div>
                 <button
-                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white w-full'
+                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
                   onClick={handlePreviousSection}
                 >
                   Previous
@@ -493,7 +493,7 @@ function SignupLecturer() {
               </div>
               <div>
                 <button
-                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white w-full'
+                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
                   onClick={handleNextSection}
                 >
                   Next
@@ -532,10 +532,10 @@ function SignupLecturer() {
                 />
               </div>
             </div>
-            <div className='grid grid-cols-2 gap-4 mt-8 w-full'>
+            <div className='flex flex-row gap-5'>
               <div>
                 <button
-                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white w-full'
+                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
                   onClick={handlePreviousSection}
                 >
                   Previous
@@ -543,7 +543,7 @@ function SignupLecturer() {
               </div>
               <div>
                 <button
-                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white w-full'
+                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
                   onClick={handleNextSection}
                 >
                   Next
@@ -605,10 +605,10 @@ function SignupLecturer() {
                 />
               </div>
             </div>
-            <div className='grid grid-cols-2 gap-4 mt-8 w-full'>
+            <div className='flex flex-row gap-5'>
               <div>
                 <button
-                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white w-full'
+                  className='border-2 border-gray-200 px-6 rounded-md font-semibold hover:bg-gray-600 hover:text-white'
                   onClick={handlePreviousSection}
                 >
                   Previous
@@ -616,7 +616,7 @@ function SignupLecturer() {
               </div>
               <div>
                 <button
-                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white w-full'
+                  className='border-2 border-blue-200 px-6 rounded-md font-semibold hover:bg-blue-600 hover:text-white'
                   onClick={handleNextSection}
                 >
                   Next
@@ -701,8 +701,15 @@ function SignupLecturer() {
 
   return (
     <div className='mt-10 h-screen w-screen'>
-    
-      {renderSection()}
+      <div>
+        <Link
+        to='/'>
+          <FaHome className='text-blue-500 text-3xl absolute top-16 left-6'/>
+        </Link>
+      </div>
+      <div className="">
+        {renderSection()}
+      </div>
     </div>
   );
 }

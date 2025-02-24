@@ -7,6 +7,6 @@ const {loginStudent} =  require('../controller/student/loginauthentication/login
 
 router.post('/signupstudent', authenticationcontroller.signupstudent);
 router.post('/signuplecturer', signuplecturer);
-router.post('/loginstudent', loginStudent);
+router.post('/loginaccount', loginStudent);
 
 module.exports = router; // Export the router directly

@@ -22,6 +22,8 @@ exports.signupstudent = async (req, res) => {
                     dateOfAdmission DATE,
                     dateOfCompletion DATE,
                     hall VARCHAR(255),
+                    hallName VARCHAR(255),
+                    hallType VARCHAR (255),
                     prefix VARCHAR(50),
                     firstName VARCHAR(255),
                     middleName VARCHAR(255),
@@ -48,6 +50,21 @@ exports.signupstudent = async (req, res) => {
             await db.query(createTableQuery);
         }
 
+        // Check for existing student data
+        const existingStudentQuery = `
+            SELECT * FROM student 
+            WHERE indexNo = ? OR mobileNumber = ? OR institutionalEmail = ?
+        `;
+        const [existingStudents] = await db.query(existingStudentQuery, [
+            studentData.indexNo,
+            studentData.mobileNumber,
+            studentData.institutionalEmail
+        ]);
+
+        if (existingStudents.length > 0) {
+            return res.status(400).send('Index number, mobile number, or institutional email already exists.');
+        }
+
         // Hash the password before inserting
         const hashedPassword = await bcrypt.hash(studentData.password, 10);
         studentData.password = hashedPassword; // Store the hashed password
@@ -62,19 +79,19 @@ exports.signupstudent = async (req, res) => {
 
 const insertStudentData = async (studentData, res) => {
     const insertQuery = `
-        INSERT INTO student (
-            indexNo, entryMode, entryLevel, currentLevel, program,
-            dateOfAdmission, dateOfCompletion, hall, prefix, firstName,
-            middleName, lastName, gender, dateOfBirth, placeOfBirth,
-            nationality, hometown, cityOfBirth, mobileNumber,
-            personalInformation, institutionalEmail, addressLine,
-            addressLine2, addressCountry, martialStatus, religion,
-            digitalAddress, password  -- Include password in the insert query
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-            ?, ?, ?, ?, ?, ?, ?, ?
-        )
-    `;
+    INSERT INTO student (
+        indexNo, entryMode, entryLevel, currentLevel, program,
+        dateOfAdmission, dateOfCompletion, hall, hallName, hallType, prefix, firstName,
+        middleName, lastName, gender, dateOfBirth, placeOfBirth,
+        nationality, hometown, cityOfBirth, mobileNumber,
+        personalInformation, institutionalEmail, addressLine,
+        addressLine2, addressCountry, martialStatus, religion,
+        digitalAddress, password
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+    )
+`;
 
     const values = [
         studentData.indexNo,
@@ -85,6 +102,8 @@ const insertStudentData = async (studentData, res) => {
         studentData.dateOfAdmission,
         studentData.dateOfCompletion,
         studentData.hall,
+        studentData.hallName,
+        studentData.hallType,
         studentData.prefix,
         studentData.firstName,
         studentData.middleName,
@@ -96,14 +115,14 @@ const insertStudentData = async (studentData, res) => {
         studentData.hometown,
         studentData.cityOfBirth,
         studentData.mobileNumber,
-        studentData.personalInformation,
+        studentData.personalInformation || '', // Default to empty string if not provided
         studentData.institutionalEmail,
         studentData.addressLine,
         studentData.addressLine2,
         studentData.addressCountry,
         studentData.martialStatus,
         studentData.religion,
-        studentData.digitalAddress,
+        studentData.digitalAddress || '', // Default to empty string if not provided
         studentData.password  // Use the hashed password
     ];
 

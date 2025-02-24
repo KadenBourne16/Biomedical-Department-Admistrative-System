@@ -11,15 +11,13 @@ function NewsCards({ newsobject }) {
               <h1 className='font-bold text-blue-500'>Title: <span className='font-normal text-black ml-2'>{news.title}</span></h1>
                 <p><span className='inline-flex font-bold text-blue-500'>Description: </span> {news.description}</p>
                 <h1 className='font-bold text-blue-500'>Note: <span className='font-normal text-black'>{news.note}</span></h1>
-                <h1 className='font-bold text-blue-500'>Date of post: <span className='font-normal text-black'>Date goes here</span></h1>
+                <h1 className='font-bold text-blue-500'>Date of post: <span className='font-normal text-black'>{news.date}</span></h1>
             </div>
-              
               <div className='items-center self-center pl-20'>
                 <button className='px-5 py-0.5 bg-green-600 text-white font-semibold rounded-md hover:bg-green-800'>Update</button>
                 <button className='px-5 py-0.5 bg-red-500 rounded-md ml-2 text-white font-semibold hover:bg-red-800'>Delete</button>
               </div>
           </div>
-          
         ))}
       </div>
     </div>

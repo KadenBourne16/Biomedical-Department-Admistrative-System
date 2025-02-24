@@ -9,6 +9,7 @@ import HDashboard from './pages/HeadOfDepartment/H_Main'
 import SignupLecturer from './pages/Authentication/Signup/Lecturer/signup_lecturer'
 import NewsCards from './components/HeadOfDepartment/Cards/NewsCards'
 import News from '../src/components/HeadOfDepartment/Forms/News'
+import AvailableNews from './pages/HeadOfDepartment/Others/Avalilable_News_Page'
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path='/signup' element={<SignUp/>} />    
           <Route path='/signup/student' element={<SignupStudent/>} />    
           <Route path='/signup/lecturer' element={<SignupLecturer/>} />
+          <Route path='/availablenews' element={<AvailableNews/>} />
           <Route path='/hod/dashboard/*'  element={<HDashboard/>}/>
 
       </Routes>

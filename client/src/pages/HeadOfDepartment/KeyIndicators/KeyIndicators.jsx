@@ -1,8 +1,11 @@
 import React from 'react'
+import KeyIndicatorsNav from '../../../components/HeadOfDepartment/Navs/keyindicatorsnav';
 
 function KeyIndicators() {
   return (
-    <div>KeyIndicators</div>
+    <div>
+        <KeyIndicatorsNav/>
+    </div>
   )
 }
 

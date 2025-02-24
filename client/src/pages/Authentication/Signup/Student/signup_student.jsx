@@ -1,14 +1,13 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from 'axios';
-import SuccessMessageFile from '../../../../components/login_success'
-import {useNavigate} from "react-router-dom"
-import '../../../../index.css'
+import SuccessMessageFile from '../../../../components/login_success';
+import { useNavigate } from "react-router-dom";
+import '../../../../index.css';
 import { Link } from "react-router-dom";
 import { FaHome } from 'react-icons/fa';
 
 function SignupStudent() {
   const [formData, setFormData] = useState({
-    // Program information
     indexNo: "",
     entryMode: "",
     entryLevel: "",
@@ -17,7 +16,8 @@ function SignupStudent() {
     dateOfAdmission: "",
     dateOfCompletion: "",
     hall: "",
-    // Bio information
+    hallName: "",
+    hallType: "",
     prefix: "",
     firstName: "",
     middleName: "",
@@ -29,19 +29,32 @@ function SignupStudent() {
     hometown: "",
     cityOfBirth: "",
     mobileNumber: "",
-    personalInformation: "",
     institutionalEmail: "",
     addressLine: "",
     addressLine2: "",
-    addressCountry: "",
     martialStatus: "",
     religion: "",
-    digitalAddress: "",
     password: "biomedical_student"
   });
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [errors, setErrors] = useState({}); // To store validation errors
+  const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let timeoutCounter;
+    if (successMessage) {
+      timeoutCounter = setTimeout(() => {
+        setSuccessMessage(false);
+      }, 3000);
+    }
+    return () => {
+      if (timeoutCounter) {
+        clearTimeout(timeoutCounter);
+      }
+    };
+  }, [successMessage]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,52 +66,26 @@ function SignupStudent() {
 
   const validateForm = () => {
     const newErrors = {};
-    // Check institutional email
     if (!formData.institutionalEmail.includes('@ktu.edu.gh')) {
       newErrors.institutionalEmail = "Institutional email must contain @ktu.edu.gh";
     }
-    // Check mobile number
     if (!/^\d+$/.test(formData.mobileNumber)) {
       newErrors.mobileNumber = "Mobile number must contain only digits";
     }
-
-    if(formData.prefix === "Mr" && formData.gender === "Female" ){
-      newErrors.prefix = "Prefix and Gender doesn't match"
-      newErrors.gender = "Gender and prefix doesn't match"
+    if (formData.prefix === "Mr" && formData.gender === "Female") {
+      newErrors.prefix = "Prefix and Gender don't match";
+      newErrors.gender = "Gender and prefix don't match";
     }
-
-    if(formData.dateOfAdmission > formData.dateOfCompletion){
-      newErrors.dateOfAdmission = "Date of admission cannot be after date of completion"
-      newErrors.dateOfCompletion = "Date of completion cannot be before date of admission"
+    if (formData.dateOfAdmission > formData.dateOfCompletion) {
+      newErrors.dateOfAdmission = "Date of admission cannot be after date of completion";
+      newErrors.dateOfCompletion = "Date of completion cannot be before date of admission";
     }
-
-    if(formData.entryLevel > formData.currentLevel){
-      newErrors.entryLevel = "Entry level cannot be more than current level"
-      newErrors.currentLevel = "Current level cannot be more than entry level"
+    if (formData.entryLevel > formData.currentLevel) {
+      newErrors.entryLevel = "Entry level cannot be more than current level";
+      newErrors.currentLevel = "Current level cannot be more than entry level";
     }
-
-    console.log(formData.dateOfAdmission)
-    console.log(newErrors);
     return newErrors;
   };
-
-  const navigate = useNavigate()
-  const [successmessage, setSuccessMessage] = useState(false)
-
-  useEffect(() => {
-    let timeoutcounter;
-    if(successmessage){
-      timeoutcounter = setTimeout(() => {
-          setSuccessMessage(false)
-      }, 3000)
-    }
-
-    return() => {
-      if(timeoutcounter){
-        clearTimeout(timeoutcounter)
-      }
-    }
-  }, [successmessage])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -106,24 +93,32 @@ function SignupStudent() {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
-    }else{
-       setErrors({})
+    } else {
+      setErrors({});
     }
+
+    // Set country and digital address based on formData
+    const country = formData.addressLine ? "Ghana" : ""; // Example: Set country based on addressLine
+    const digitalAddress = formData.addressLine2 || ""; // Example: Set digital address based on addressLine2
+
+    const dataToSubmit = {
+      ...formData,
+      addressCountry: country,
+      digitalAddress: digitalAddress,
+    };
 
     try {
-      const res = await axios.post('http://localhost:3300/bdas/signupstudent', formData);
-      if(res){
+      const res = await axios.post('http://192.168.205.178:8080/bdas/signupstudent', dataToSubmit);
+      if (res) {
         setSuccessMessage(true);
-      }else{
-        navigate("/")
+        navigate("/");
+      } else {
+        console.log("User  not created");
       }
-
-      console.log("Response:", res.data);
     } catch (err) {
-      console.log("Error occurred", err);
+      console.error("Error occurred", err);
+      setErrors({ submit: "An error occurred while submitting the form. Please try again." });
     }
-    // Send the form data to the backend
-    console.log(formData);
   };
 
   const nextStep = () => {
@@ -141,22 +136,18 @@ function SignupStudent() {
           <div className="h-screen">
             <h2 className="text-2xl font-bold mb-4">Program Information</h2>
             <div className="mb-4">
-              <label htmlFor="indexNo" className="block text-gray-700 font-bold mb-2">
-                Index No:
-              </label>
+              <label htmlFor="indexNo" className="block text-gray-700 font-bold mb-2">Index No:</label>
               <input
                 type="text"
                 id="indexNo"
                 name="indexNo"
                 value={formData.indexNo}
                 onChange={handleChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" 
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="entryMode" className="block text-gray-700 font-bold mb-2">
-                Entry Mode:
-              </label>
+              <label htmlFor="entryMode" className="block text-gray-700 font-bold mb-2">Entry Mode:</label>
               <select
                 id="entryMode"
                 name="entryMode"
@@ -168,12 +159,9 @@ function SignupStudent() {
                 <option value="Direct Entry">Direct Entry</option>
                 <option value="Matured Entry">Matured Entry</option>
               </select>
-              {errors.entryLevel && <p className="text-red-500">{errors.entryLevel}</p>}
             </div>
             <div className="mb-4">
-              <label htmlFor="entryLevel" className="block text-gray-700 font-bold mb-2">
-                Entry Level:
-              </label>
+              <label htmlFor="entryLevel" className="block text-gray-700 font-bold mb-2">Entry Level:</label>
               <select
                 id="entryLevel"
                 name="entryLevel"
@@ -183,15 +171,13 @@ function SignupStudent() {
               >
                 <option value="">Select Entry Level</option>
                 <option value="100">100</option>
-                < option value="200">200</option>
+                <option value="200">200</option>
                 <option value="300">300</option>
                 <option value="400">400</option>
               </select>
             </div>
             <div className="mb-4">
-              <label htmlFor="currentLevel" className="block text-gray-700 font-bold mb-2">
-                Current Level:
-              </label>
+              <label htmlFor="currentLevel" className="block text-gray-700 font-bold mb-2">Current Level:</label>
               <select
                 id="currentLevel"
                 name="currentLevel"
@@ -205,25 +191,23 @@ function SignupStudent() {
                 <option value="300">300</option>
                 <option value="400">400</option>
               </select>
-              {errors.entryLevel && <p className="text-red-500">{errors.entryLevel}</p>}
             </div>
             <div className="mb-4">
-              <label htmlFor="program" className="block text-gray-700 font-bold mb-2">
-                Program:
-              </label>
-              <input
-                type="text"
+              <label htmlFor="program" className="block text-gray-700 font-bold mb-2">Program:</label>
+              <select
                 id="program"
                 name="program"
                 value={formData.program}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-              />
+              >
+                <option value="">Select Program</option>
+                <option value="BTECH Biomedical Engineering">BTECH Biomedical Engineering</option>
+                <option value="HND Biomedical Engineering">HND Biomedical Engineering</option>
+              </select>
             </div>
             <div className="mb-4">
-              <label htmlFor="dateOfAdmission" className="block text-gray-700 font-bold mb-2">
-                Date of Admission:
-              </label>
+              <label htmlFor="dateOfAdmission" className="block text-gray-700 font-bold mb-2">Date of Admission:</label>
               <input
                 type="date"
                 id="dateOfAdmission"
@@ -232,12 +216,9 @@ function SignupStudent() {
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
               />
-              {errors.dateOfAdmission && <p className="text-red-500">{errors.dateOfAdmission}</p>}
             </div>
             <div className="mb-4">
-              <label htmlFor="dateOfCompletion" className="block text-gray-700 font-bold mb-2">
-                Date of Completion:
-              </label>
+              <label htmlFor="dateOfCompletion" className="block text-gray-700 font-bold mb-2">Date of Completion:</label>
               <input
                 type="date"
                 id="dateOfCompletion"
@@ -246,20 +227,54 @@ function SignupStudent() {
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
               />
-              {errors.dateOfCompletion && <p className="text-red-500">{errors.dateOfCompletion}</p>}
             </div>
             <div className="mb-4">
-              <label htmlFor="hall" className="block text-gray-700 font-bold mb-2">
-                Hall:
-              </label>
-              <input
-                type="text"
+              <label htmlFor="hall" className="block text-gray-700 font-bold mb-2">Residence:</label>
+              <select
                 id="hall"
                 name="hall"
                 value={formData.hall}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-              />
+              >
+                <option value="">Select Residence</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Hostel">Hostel</option>
+              </select>
+              {formData.hall === "Apartment" && (
+                <div className="mt-2">
+                  <label htmlFor="hallName" className="font-semibold">Enter {formData.hall} Address</label>
+                  <input
+                    type="text"
+                    id="hallName"
+                    name="hallName"
+                    value={formData.hallName}
+                    onChange={handleChange}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+                  />
+                </div>
+              )}
+              {formData.hall === "Hostel" && (
+                <div className="mt-5">
+                  <label htmlFor="hallName">Hostel Name</label>
+                  <select
+                    id="hallName"
+                    name="hallName"
+                    value={formData.hallName}
+                    onChange={handleChange}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+                  >
+                    <option value="">Select Hostel</option>
+                    <option value="GetFund">GetFund</option>
+                    <option value="Universal">Universal</option>
+                    <option value="Papobi">Papobi</option>
+                    <option value="Elite">Elite</option>
+                    <option value="Adehyie">Adehyie</option>
+                    <option value="KTwum">K-Twum</option>
+                    <option value="Others">Others</option>
+                  </select>
+                </div>
+              )}
             </div>
             <button
               type="button"
@@ -275,9 +290,7 @@ function SignupStudent() {
           <div>
             <h2 className="text-2xl font-bold mb-4">Bio Information</h2>
             <div className="mb-4">
-              <label htmlFor="prefix" className="block text-gray-700 font-bold mb-2">
-                Prefix:
-              </label>
+              <label htmlFor="prefix" className="block text-gray-700 font-bold mb-2">Prefix:</label>
               <select
                 id="prefix"
                 name="prefix"
@@ -288,14 +301,11 @@ function SignupStudent() {
                 <option value="">Select Prefix</option>
                 <option value="Mr">Mr</option>
                 <option value="Mrs">Mrs</option>
-                <option value="Ms">Ms</option>
+                <option value="Ms">Miss</option>
               </select>
-              {errors.prefix && <p className="text-red-500">{errors.prefix}</p>}
             </div>
             <div className="mb-4">
-              <label htmlFor="firstName" className="block text-gray-700 font-bold mb-2">
-                First Name:
-              </label>
+              <label htmlFor="firstName" className="block text-gray-700 font-bold mb-2">First Name:</label>
               <input
                 type="text"
                 id="firstName"
@@ -306,22 +316,18 @@ function SignupStudent() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="middleName" className="block text-gray-700 font-bold mb-2">
-                Middle Name:
-              </label>
+              <label htmlFor="middleName" className="block text-gray-700 font-bold mb-2">Middle Name:</label>
               <input
                 type="text"
                 id="middleName"
                 name="middleName"
-                value={formData .middleName}
+                value={formData.middleName}
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="lastName" className="block text-gray-700 font-bold mb-2">
-                Last Name:
-              </label>
+              <label htmlFor="lastName" className="block text-gray-700 font-bold mb-2">Last Name:</label>
               <input
                 type="text"
                 id="lastName"
@@ -332,9 +338,7 @@ function SignupStudent() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="gender" className="block text-gray-700 font-bold mb-2">
-                Gender:
-              </label>
+              <label htmlFor="gender" className="block text-gray-700 font-bold mb-2">Gender:</label>
               <select
                 id="gender"
                 name="gender"
@@ -346,12 +350,9 @@ function SignupStudent() {
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
-              {errors.gender && <p className="text-red-500">{errors.gender}</p>}
             </div>
             <div className="mb-4">
-              <label htmlFor="dateOfBirth" className="block text-gray-700 font-bold mb-2">
-                Date of Birth:
-              </label>
+              <label htmlFor="dateOfBirth" className="block text-gray-700 font-bold mb-2">Date of Birth:</label>
               <input
                 type="date"
                 id="dateOfBirth"
@@ -362,9 +363,7 @@ function SignupStudent() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="placeOfBirth" className="block text-gray-700 font-bold mb-2">
-                Place of Birth:
-              </label>
+              <label htmlFor="placeOfBirth" className="block text-gray-700 font-bold mb-2">Place of Birth:</label>
               <input
                 type="text"
                 id="placeOfBirth"
@@ -375,9 +374,7 @@ function SignupStudent() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="nationality" className="block text-gray-700 font-bold mb-2">
-                Nationality:
-              </label>
+              <label htmlFor="nationality" className="block text-gray-700 font-bold mb-2">Nationality:</label>
               <input
                 type="text"
                 id="nationality"
@@ -388,9 +385,7 @@ function SignupStudent() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="hometown" className="block text-gray-700 font-bold mb-2">
-                Hometown:
-              </label>
+              <label htmlFor="hometown" className="block text-gray-700 font-bold mb-2">Hometown:</label>
               <input
                 type="text"
                 id="hometown"
@@ -401,9 +396,7 @@ function SignupStudent() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="cityOfBirth" className="block text-gray-700 font-bold mb-2">
-                City of Birth:
-              </label>
+              <label htmlFor="cityOfBirth" className="block text-gray-700 font-bold mb-2">District:</label>
               <input
                 type="text"
                 id="cityOfBirth"
@@ -414,9 +407,7 @@ function SignupStudent() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="mobileNumber" className="block text-gray-700 font-bold mb-2">
-                Mobile Number:
-              </label>
+              <label htmlFor="mobileNumber" className="block text-gray-700 font-bold mb-2">Mobile Number:</label>
               <input
                 type="text"
                 id="mobileNumber"
@@ -425,25 +416,22 @@ function SignupStudent() {
                 onChange={handleChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
               />
+              {errors.mobileNumber && <p className="text-red-500">{errors.mobileNumber}</p>}
             </div>
-            {errors.mobileNumber && <p className="text-red-500">{errors.mobileNumber}</p>}
             <div className="mb-4">
-              <label htmlFor="institutionalEmail" className="block text-gray-700 font-bold mb-2">
-                Institutional Email:
-              </label>
+              <label htmlFor="institutionalEmail" className="block text-gray-700 font-bold mb-2">Institutional Email:</label>
               <input
                 type="email"
                 id="institutionalEmail"
                 name="institutionalEmail"
                 value={formData.institutionalEmail}
                 onChange={handleChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"/>
-             {errors.institutionalEmail && <p className="text-red-500">{errors.institutionalEmail}</p>}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
+              />
+              {errors.institutionalEmail && <p className="text-red-500">{errors.institutionalEmail}</p>}
             </div>
             <div className="mb-4">
-              <label htmlFor="addressLine" className="block text-gray-700 font-bold mb-2">
-                Address Line (Postal Address):
-              </label>
+              <label htmlFor="addressLine" className="block text-gray-700 font-bold mb-2">Address Line (Postal Address):</label>
               <input
                 type="text"
                 id="addressLine"
@@ -454,9 +442,7 @@ function SignupStudent() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="addressLine2" className="block text-gray-700 font-bold mb-2">
-                Address Line 2 (Digital Address):
-              </label>
+              <label htmlFor="addressLine2" className="block text-gray-700 font-bold mb-2">Address Line 2 (Digital Address):</label>
               <input
                 type="text"
                 id="addressLine2"
@@ -467,22 +453,7 @@ function SignupStudent() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="addressCountry" className="block text-gray-700 font-bold mb-2">
-                Address Country:
-              </label>
-              <input
-                type="text"
-                id="addressCountry"
-                name="addressCountry"
-                value={formData.addressCountry}
-                onChange={handleChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="martialStatus" className="block text-gray-700 font-bold mb-2">
-                Martial Status:
-              </label>
+              <label htmlFor="martialStatus" className="block text-gray-700 font-bold mb-2">Martial Status:</label>
               <select
                 id="martialStatus"
                 name="martialStatus"
@@ -496,9 +467,7 @@ function SignupStudent() {
               </select>
             </div>
             <div className="mb-4">
-              <label htmlFor="religion" className="block text-gray-700 font-bold mb-2">
-                Religion:
-              </label>
+              <label htmlFor="religion" className="block text-gray-700 font-bold mb-2">Religion:</label>
               <select
                 id="religion"
                 name="religion"
@@ -512,19 +481,6 @@ function SignupStudent() {
                 <option value="Traditionalist">Traditionalist</option>
               </select>
             </div>
-            <div className="mb-4">
-              <label htmlFor="digitalAddress" className="block text-gray-700 font-bold mb-2">
-                Digital Address:
-              </label>
-              <input
-                type="text"
-                id="digitalAddress"
-                name="digitalAddress"
-                value={formData.digitalAddress}
-                onChange={handleChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
-              />
-            </div>
             <button
               type="button"
               onClick={prevStep}
@@ -534,6 +490,7 @@ function SignupStudent() {
             </button>
             <button
               type="submit"
+              onClick={handleSubmit}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               Submit
@@ -546,19 +503,20 @@ function SignupStudent() {
   };
 
   return (
-    <div className="signupbackground">
-      {successmessage && (
+    <div className="Background1">
+      {successMessage && (
         <div>
-          <div className={`modal-overlay ${successmessage ? "open": ""}`}>
+          <div className={`modal-overlay ${successMessage ? "open" : ""}`}>
             <SuccessMessageFile />
           </div>
         </div>
       )}
       <Link to="/" className="absolute top-4 right-4 text-gray-700 hover:text-blue-500">
-              <FaHome className='text-4xl text-blue-500'/>
+        <FaHome className='text-4xl text-blue-500' />
       </Link>
       <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-4">
         {renderStep()}
+        {errors.submit && <p className="text-red-500">{errors.submit}</p>}
       </form>
     </div>
   );

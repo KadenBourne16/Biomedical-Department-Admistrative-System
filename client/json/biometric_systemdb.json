@@ -1,25 +1,45 @@
 {
   "News": [
     {
-      "id": "cede",
-      "title": "Information",
-      "description": "Pastor",
-      "note": "Brief",
-      "date": ""
-    },
-    {
-      "id": "b14c",
-      "title": "James",
-      "description": "Oduro",
-      "note": "Gyamfi",
-      "date": ""
-    },
-    {
-      "id": "e8dd",
-      "title": "Orientation next week",
-      "description": "All faculty deans are to meet in ababentil",
-      "note": "Should not be late",
-      "date": ""
+      "id": "2960",
+      "title": "adf",
+      "description": "adf",
+      "note": "asdf",
+      "date": "2025-02-18T20:49:08.899Z"
     }
-  ]
+  ],
+  "Students": [
+    {
+      "id": "b021",
+      "indexNo": "B202210014",
+      "entryMode": "Direct Entry",
+      "entryLevel": "100",
+      "currentLevel": "100",
+      "program": "Biomedical Science",
+      "dateOfAdmission": "2020-01-14",
+      "dateOfCompletion": "2023-03-23",
+      "hall": "JB Danquah",
+      "prefix": "Mr",
+      "firstName": "Kelvin",
+      "middleName": "",
+      "lastName": "Asante-Bekoe",
+      "gender": "Male",
+      "dateOfBirth": "2025-02-15",
+      "placeOfBirth": "Kumasi",
+      "nationality": "Ghanaian",
+      "hometown": "Anomabo",
+      "cityOfBirth": "Kumasi",
+      "mobileNumber": "05485564156",
+      "personalInformation": "",
+      "institutionalEmail": "Kaden@ktu.edu.gh",
+      "addressLine": "asdfasdf",
+      "addressLine2": "asdf",
+      "addressCountry": "",
+      "martialStatus": "Single",
+      "religion": "Christianity",
+      "digitalAddress": "ER-3345-993",
+      "password": "biomedical_student"
+    }
+  ],
+  "Lecturers": []
 }

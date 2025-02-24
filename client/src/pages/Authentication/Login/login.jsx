@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import "../../../index.css";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
     const [errors, setErrors] = useState({});
@@ -10,6 +11,8 @@ const LoginForm = () => {
         email: "",
         password: ""
     });
+
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setLoginData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -19,8 +22,11 @@ const LoginForm = () => {
         e.preventDefault();
         console.log("DATA TO BE SENT", logindata);
         try {
-            const res = await axios.post('http://localhost:3300/bdas/loginstudent', logindata);
+            const res = await axios.post('https://backend.kc-technologies.org/bdas/loginaccount', logindata);
             console.log(res);
+            if(res === "successsful"){
+                navigate('/hod/dashboard')
+            }
         } catch (err) {
             console.log(err);
         }
